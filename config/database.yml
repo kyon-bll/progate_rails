@@ -13,8 +13,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
+  username: kyon
+  password: 12shiina
   socket: /tmp/mysql.sock
 
 development:
@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: kyon_rails_production
-  username: kyon_rails
-  password: <%= ENV['KYON_RAILS_DATABASE_PASSWORD'] %>
+  username: kyon
+  password: 12shiina
