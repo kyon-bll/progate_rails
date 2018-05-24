@@ -1,7 +1,15 @@
 # coding: utf-8
 class UsersController < ApplicationController
+  before_action :authenticate_user, { only: [:edit, :update, :profile] }
+  before_action :forbid_login_user, { only: [:new, :created, :login_form, :login] }
+  
   def index
     @users = User.all.order(created_at: :desc)
+  end
+
+  def profile
+    @user = User.find_by(id: session[:user_id])
+    render "users/show"
   end
 
   def show
@@ -17,10 +25,12 @@ class UsersController < ApplicationController
       name: params[:name],
       email: params[:email],
       image_name: "default_user.jpg",
+      password: params[:password],
     )
     if @user.save
+      session[:user_id] = @user.id
       flash[:notice] = "ユーザー登録が完了しました"
-      redirect_to("/users")
+      redirect_to("/posts")
     else
       render("users/new")
     end
@@ -56,6 +66,31 @@ class UsersController < ApplicationController
 
     flash[:notice] = "ユーザーを削除しました"
     redirect_to("/users")
+  end
+
+  def login_form
+    @email = ""
+    @password = ""
+  end
+  
+  def login
+    @email = params[:email]
+    @password = params[:password]
+    @user = User.find_by(email: @email, password: @password)
+    if @user
+      session[:user_id] = @user.id
+      flash[:notice] = "ログインしました"
+      redirect_to "/posts"
+    else
+      @error_message = "メールアドレスまたはパスワードが間違っています"
+      render "/users/login_form"
+    end
+  end
+  
+  def logout
+    session[:user_id] = nil
+    flash[:notice] = "ログアウトしました"
+    redirect_to "/login"
   end
   
 end
