@@ -4,6 +4,9 @@
     <% @users.each do |user| %>
       <a href=<%= "/users/#{user.id}" %>>
         <div class="users-index-item">
+          <div class="user-left">
+            <img src="/user_images/<%= user.image_name %>"/>
+          </div>
           <div class="user-right">
             <%= user.name %>
           </div>
