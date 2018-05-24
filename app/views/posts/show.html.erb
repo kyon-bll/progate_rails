@@ -1,10 +1,14 @@
 <div class="main posts-index">
   <div class="container">
-      <div class="posts-index-item">
-        <%= @post.content %>
-        <div class="post-time">
-          <%= @post.created_at %>
-        </div>
+    <div class="posts-index-item">
+      <%= @post.content %>
+      <div class="post-time">
+        <%= @post.created_at %>
       </div>
+      <div class="post-menus">
+        <%= link_to("編集", "/posts/#{@post.id}/edit") %>
+        <%= link_to("削除", "/posts/#{@post.id}/destroy", {method: "post"}) %>
+      </div>
+    </div>
   </div>
 </div>
